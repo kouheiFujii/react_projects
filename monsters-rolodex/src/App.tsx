@@ -4,13 +4,17 @@ import "./App.css";
 
 interface Props {}
 // Component ver
-class App extends React.Component<{}, { name: string }> {
+class App extends React.Component<
+  {},
+  { name: { firstName: string; lastName: string } }
+> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      name: "Alisa",
+      name: { firstName: "Alisa", lastName: "Monroe" },
     };
   }
+
   render() {
     return (
       <div className="App">
@@ -19,7 +23,16 @@ class App extends React.Component<{}, { name: string }> {
           <p>
             Edit <code>src/App.tsx</code> and save to reload.
           </p>
-          <p>Hi {this.state.name}</p>
+          <p>
+            Hi {this.state.name.firstName}・{this.state.name.lastName}
+          </p>
+          <button
+            onClick={() => {
+              this.setState({ name: { firstName: "Bob", lastName: "Thomas" } });
+            }}
+          >
+            name change{" "}
+          </button>
         </header>
       </div>
     );
