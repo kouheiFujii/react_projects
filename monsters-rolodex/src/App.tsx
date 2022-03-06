@@ -1,41 +1,39 @@
 import React from "react";
-import logo from "./logo.svg";
+import { Monsters } from "./interface";
 import "./App.css";
 
 interface Props {}
-// Component ver
-class App extends React.Component<
-  {},
-  { name: { firstName: string; lastName: string } }
-> {
+class App extends React.Component<{}, Monsters> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      name: { firstName: "Alisa", lastName: "Monroe" },
+      monsters: [
+        {
+          id: 1,
+          name: "Linda",
+        },
+        {
+          id: 2,
+          name: "Flank",
+        },
+        {
+          id: 3,
+          name: "Jacky",
+        },
+        {
+          id: 4,
+          name: "Andrei",
+        },
+      ],
     };
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <p>
-            Hi {this.state.name.firstName}・{this.state.name.lastName}
-          </p>
-          <button
-            onClick={() => {
-              this.setState(() => {
-                return { name: { firstName: "Bob", lastName: "Thomas" } };
-              });
-            }}
-          >
-            name change
-          </button>
-        </header>
+        {this.state.monsters.map((monster) => {
+          return <h1 key={monster.id}>{monster.name}</h1>;
+        })}
       </div>
     );
   }
