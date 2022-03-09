@@ -1,1 +1,1 @@
-export type { Monsters } from "./monsters";
+export type { Monster } from "./monsters";

@@ -1,16 +1,20 @@
 import React from "react";
-import { Monsters } from "./interface";
+import { Monster } from "./interface";
 import "./App.css";
-import { Monster } from "./interface/monsters";
 
 interface Props {}
-class App extends React.Component<{}, Monsters> {
+interface State {
+  monsters: Monster[];
+  searchField?: string;
+}
+class App extends React.Component<{}, State> {
   constructor(props: Props) {
     super(props);
     console.log("constructor");
 
     this.state = {
       monsters: [],
+      searchField: "",
     };
   }
   componentDidMount() {
@@ -19,7 +23,7 @@ class App extends React.Component<{}, Monsters> {
       .then((result) => result.json())
       .then((users: Monster[]) =>
         this.setState(
-          (): Monsters => {
+          (): State => {
             return { monsters: users };
           },
           () => {
@@ -28,9 +32,11 @@ class App extends React.Component<{}, Monsters> {
         )
       );
   }
-
-  render() {
+  render(): React.ReactNode {
     console.log("render");
+    const filteredMonsters = this.state.monsters.filter((monster) =>
+      monster.name.toLocaleLowerCase().includes(this.state.searchField!)
+    );
     return (
       <div className="App">
         <input
@@ -38,16 +44,13 @@ class App extends React.Component<{}, Monsters> {
           type="search"
           placeholder="search monster"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            const searchString = e.target.value.toLocaleLowerCase();
-            const filteredMonsters = this.state.monsters.filter((monster) =>
-              monster.name.toLocaleLowerCase().includes(searchString)
-            );
+            const searchField = e.target.value.toLocaleLowerCase();
             this.setState(() => {
-              return { monsters: filteredMonsters };
+              return { searchField };
             });
           }}
         />
-        {this.state.monsters.map((monster) => {
+        {filteredMonsters.map((monster) => {
           return <h1 key={monster.id}>{monster.name}</h1>;
         })}
       </div>
