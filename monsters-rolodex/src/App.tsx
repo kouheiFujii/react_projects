@@ -2,6 +2,7 @@ import React from "react";
 import { Monster } from "./interface";
 import "./App.css";
 import CardList from "./component/card-list/CardList";
+import SearchBox from "./component/search-box/SearchBox";
 
 interface Props {}
 interface State {
@@ -45,12 +46,12 @@ class App extends React.Component<{}, State> {
     );
     return (
       <div className="App">
-        <input
+        <SearchBox
           className="search-box"
-          type="search"
           placeholder="search monster"
-          onChange={onSearchChange}
+          onChangeHandler={onSearchChange}
         />
+
         <CardList monsters={filteredMonsters} />
       </div>
     );
