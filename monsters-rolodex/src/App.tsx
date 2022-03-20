@@ -1,6 +1,7 @@
 import React from "react";
 import { Monster } from "./interface";
 import "./App.css";
+import CardList from "./component/card-list/CardList";
 
 interface Props {}
 interface State {
@@ -10,15 +11,12 @@ interface State {
 class App extends React.Component<{}, State> {
   constructor(props: Props) {
     super(props);
-    console.log("constructor");
-
     this.state = {
       monsters: [],
       searchField: "",
     };
   }
   componentDidMount() {
-    console.log("componentDidMount");
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((result) => result.json())
       .then((users: Monster[]) =>
@@ -26,9 +24,7 @@ class App extends React.Component<{}, State> {
           (): State => {
             return { monsters: users };
           },
-          () => {
-            console.log(this.state);
-          }
+          () => {}
         )
       );
   }
@@ -41,7 +37,6 @@ class App extends React.Component<{}, State> {
   };
 
   render(): React.ReactNode {
-    console.log("render");
     const { monsters, searchField } = this.state;
     const { onSearchChange } = this;
 
@@ -56,9 +51,7 @@ class App extends React.Component<{}, State> {
           placeholder="search monster"
           onChange={onSearchChange}
         />
-        {filteredMonsters.map((monster) => {
-          return <h1 key={monster.id}>{monster.name}</h1>;
-        })}
+        <CardList monsters={filteredMonsters} />
       </div>
     );
   }
