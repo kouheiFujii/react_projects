@@ -1,4 +1,5 @@
 import React from "react";
+import "./search-box.styles.css";
 
 interface Props {
   className: string;
@@ -10,7 +11,7 @@ class SearchBox extends React.Component<Props, {}> {
   render(): React.ReactNode {
     return (
       <input
-        className={this.props.className}
+        className={`search-box ${this.props.className}`}
         type="search"
         placeholder={this.props.placeholder}
         onChange={this.props.onChangeHandler}
