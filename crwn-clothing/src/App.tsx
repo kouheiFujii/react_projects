@@ -1,11 +1,8 @@
 // Components
-import CategoryItem from "./components/category-item/category-item";
+import Directory from "./components/category/directory.component";
 
 // Interface
 import { Category } from "./interface";
-
-// Scss
-import "./categories.styles.scss";
 
 const App = () => {
   const categories: Category[] = [
@@ -36,13 +33,7 @@ const App = () => {
     },
   ];
 
-  return (
-    <div className="categories-container">
-      {categories.map((category) => (
-        <CategoryItem key={category.id} category={category} />
-      ))}
-    </div>
-  );
+  return <Directory categories={categories} />;
 };
 
 export default App;
