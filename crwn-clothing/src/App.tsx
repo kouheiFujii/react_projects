@@ -1,5 +1,5 @@
 // Components
-import Directory from "./components/category/directory.component";
+import Directory from "./components/directory/directory.component";
 
 // Interface
 import { Category } from "./interface";
