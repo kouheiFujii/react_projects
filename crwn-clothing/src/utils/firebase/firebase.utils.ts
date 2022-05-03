@@ -6,11 +6,22 @@ import {
   GoogleAuthProvider,
   Auth,
   User,
+  UserCredential,
 } from "firebase/auth";
 import { FirebaseOptions } from "@firebase/app";
-import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  getFirestore,
+  DocumentReference,
+  DocumentData,
+} from "firebase/firestore";
 
-// Initialize
+/*
+  Initialize
+*/
+// Firebase
 const firebaseConfig: FirebaseOptions = {
   apiKey: "AIzaSyBIli4308cQhnvtqL1de-ix8cyR8YpAAe4",
   authDomain: "u-crwn-project.firebaseapp.com",
@@ -19,19 +30,28 @@ const firebaseConfig: FirebaseOptions = {
   messagingSenderId: "660186853806",
   appId: "1:660186853806:web:bf4e7e3cd8faa74d4e583f",
 };
-const firebaseApp = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
-// Authentication of Google
+// Google Provider
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: "select_account", // https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters
 });
-export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 // Firestore
 const db = getFirestore();
-export const createUserDocumentFromAuth = async (userAuth: User) => {
+
+/*
+  Functions
+*/
+const auth: Auth = getAuth();
+
+const signInWithGooglePopup = (): Promise<UserCredential> =>
+  signInWithPopup(auth, provider);
+
+const createUserDocumentFromAuth = async (
+  userAuth: User
+): Promise<DocumentReference<DocumentData>> => {
   const userDocRef = doc(db, "user", userAuth.uid);
   const userSnapshot = await getDoc(userDocRef);
 
@@ -51,4 +71,10 @@ export const createUserDocumentFromAuth = async (userAuth: User) => {
   }
 
   return userDocRef;
+};
+
+export const firebase = {
+  auth,
+  signInWithGooglePopup,
+  createUserDocumentFromAuth,
 };
