@@ -8,6 +8,7 @@ import {
   User,
   UserCredential,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { FirebaseOptions } from "@firebase/app";
 import {
@@ -86,10 +87,18 @@ const createAuthUserWithEmailAndPassword = async (
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
+const signInAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+): Promise<UserCredential> => {
+  return await signInWithEmailAndPassword(auth, email, password);
+};
+
 export const firebase = {
   auth,
   signInWithGooglePopup,
   signInWithGoogleRedirect,
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
+  signInAuthUserWithEmailAndPassword,
 };

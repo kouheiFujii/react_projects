@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react";
 import "./button.styles.scss";
 
 type BUTTON_TYPES = "google" | "inverted";
@@ -17,9 +18,10 @@ type Props = {
   children: string;
   buttonType?: BUTTON_TYPES;
   otherProps: otherProps;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
-const Button = ({ children, buttonType, otherProps }: Props) => {
+const Button = ({ children, buttonType, otherProps, onClick }: Props) => {
   const BUTTON_TYPE_CLASSES: ButtonType = {
     google: "google-sign-in",
     inverted: "inverted",
@@ -31,6 +33,7 @@ const Button = ({ children, buttonType, otherProps }: Props) => {
         buttonType ? BUTTON_TYPE_CLASSES[buttonType] : ""
       }`}
       {...otherProps}
+      onClick={onClick}
     >
       {children}
     </button>
