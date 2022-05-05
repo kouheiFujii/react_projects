@@ -7,6 +7,7 @@ import {
   Auth,
   User,
   UserCredential,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { FirebaseOptions } from "@firebase/app";
 import {
@@ -33,8 +34,8 @@ const firebaseConfig: FirebaseOptions = {
 initializeApp(firebaseConfig);
 
 // Google Provider
-const provider = new GoogleAuthProvider();
-provider.setCustomParameters({
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
   prompt: "select_account", // https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters
 });
 
@@ -47,10 +48,14 @@ const db = getFirestore();
 const auth: Auth = getAuth();
 
 const signInWithGooglePopup = (): Promise<UserCredential> =>
-  signInWithPopup(auth, provider);
+  signInWithPopup(auth, googleProvider);
+
+const signInWithGoogleRedirect = (): Promise<never> =>
+  signInWithRedirect(auth, googleProvider);
 
 const createUserDocumentFromAuth = async (
-  userAuth: User
+  userAuth: User,
+  additionalInfo = {}
 ): Promise<DocumentReference<DocumentData>> => {
   const userDocRef = doc(db, "user", userAuth.uid);
   const userSnapshot = await getDoc(userDocRef);
@@ -64,6 +69,7 @@ const createUserDocumentFromAuth = async (
         displayName,
         email,
         createdAt,
+        ...additionalInfo,
       });
     } catch (error) {
       console.log(error);
@@ -73,8 +79,17 @@ const createUserDocumentFromAuth = async (
   return userDocRef;
 };
 
+const createAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+): Promise<UserCredential> => {
+  return await createUserWithEmailAndPassword(auth, email, password);
+};
+
 export const firebase = {
   auth,
   signInWithGooglePopup,
+  signInWithGoogleRedirect,
+  createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 };
