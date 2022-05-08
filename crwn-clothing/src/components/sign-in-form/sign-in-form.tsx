@@ -1,12 +1,11 @@
 import { firebase } from "../../utils/firebase/firebase.utils";
-
-import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
+import { FirebaseError } from "@firebase/util";
 
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 
 import "./sign-in-form.styles.scss";
-import { FirebaseError } from "@firebase/util";
 
 const defaultFormFields = {
   email: "",
@@ -14,11 +13,8 @@ const defaultFormFields = {
 };
 
 const SignInForm = () => {
-  const {
-    signInWithGooglePopup,
-    createUserDocumentFromAuth,
-    signInAuthUserWithEmailAndPassword,
-  } = firebase;
+  const { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } =
+    firebase;
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -33,15 +29,14 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const res = await signInAuthUserWithEmailAndPassword(email, password);
-      console.log(res);
+      await signInAuthUserWithEmailAndPassword(email, password);
+
       resetForm();
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {

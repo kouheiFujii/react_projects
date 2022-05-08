@@ -9,6 +9,9 @@ import {
   UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  NextOrObserver,
 } from "firebase/auth";
 import { FirebaseOptions } from "@firebase/app";
 import {
@@ -94,6 +97,11 @@ const signInAuthUserWithEmailAndPassword = async (
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
+const onAuthStateChangedLisner = (callback: NextOrObserver<User>): void => {
+  onAuthStateChanged(auth, callback);
+};
+
+const signOutUser = async () => await signOut(auth);
 export const firebase = {
   auth,
   signInWithGooglePopup,
@@ -101,4 +109,6 @@ export const firebase = {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
+  signOutUser,
+  onAuthStateChangedLisner,
 };
