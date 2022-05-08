@@ -27,6 +27,10 @@ const SignUpForm = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
+  const resetForm = () => {
+    setFormFields(defaultFormFields);
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -39,6 +43,7 @@ const SignUpForm = () => {
         password
       );
       await createUserDocumentFromAuth(user, { displayName });
+      resetForm();
     } catch (err: unknown) {
       if (
         err instanceof FirebaseError &&
